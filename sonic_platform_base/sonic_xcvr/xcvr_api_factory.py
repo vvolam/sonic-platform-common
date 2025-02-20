@@ -18,6 +18,7 @@ from .api.credo.aec_800g import CmisAec800gApi
 from .mem_maps.credo.aec_800g import CmisAec800gMemMap
 
 from .api.innolight.fr_800g import CmisFr800gApi
+from .api.amphenol.aph_bc import CmisAphBcApi
 
 from .codes.public.sff8436 import Sff8436Codes
 from .api.public.sff8436 import Sff8436Api
@@ -39,6 +40,7 @@ VENDOR_PART_NUM_LENGTH = 16
 CREDO_800G_AEC_VENDOR_PN_LIST = ["CAC81X321M2MC1MS", "CAC815321M2MC1MS", "CAC82X321M2MC1MS"]
 INL_800G_VENDOR_PN_LIST = ["T-DL8CNT-NCI", "T-DH8CNT-NCI", "T-DH8CNT-N00", "T-DP4CNH-NCI", "T-DP8CNT-NNO", "T-DP8CNH-NNO", "T-DC8CNT-NNO", "T-DP8CNL-NNO"]
 EOP_800G_VENDOR_PN_LIST = ["EOLD-168HG-02-41", "EOLD-138HG-02-41"]
+APH_BC_VENDOR_PN_LIST = ["HS33006"]
 
 class XcvrApiFactory(object):
     def __init__(self, reader, writer):
@@ -89,6 +91,11 @@ class XcvrApiFactory(object):
                 mem_map = CmisMemMap(codes)
                 xcvr_eeprom = XcvrEeprom(self.reader, self.writer, mem_map)
                 api = CmisFr800gApi(xcvr_eeprom)
+            elif ('AMPHENOL' in vendor_name and vendor_pn in APH_BC_VENDOR_PN_LIST):
+                codes = CmisCodes
+                mem_map = CmisMemMap(codes)
+                xcvr_eeprom = XcvrEeprom(self.reader, self.writer, mem_map)
+                api = CmisAphBcApi(xcvr_eeprom)
             else:
                 codes = CmisCodes
                 mem_map = CmisMemMap(codes)
